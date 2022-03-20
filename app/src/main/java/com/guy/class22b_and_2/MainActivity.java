@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
         main_FAB_action.setText("STOP");
         main_FAB_action.setIconResource(R.drawable.ic_stop);
         handler.postDelayed(r, DELAY);
+
     }
 
     private void stopTimer() {
