@@ -27,7 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class Activity_Handler extends AppCompatActivity {
 
     private MaterialToolbar toolbar;
     private ExtendedFloatingActionButton main_FAB_action;
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Switch Changed", Toast.LENGTH_SHORT).show();
         });
 
-        toolbar.setTitle("Guy Isakov");
+        //toolbar.setTitle("Handler");
         toolbar.setSubtitle("Typing...");
         return true;
     }
@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ----------- ----------- ----------- ----------- ----------- -----------
 
+    private final int DELAY = 1000;
     private enum TIMER_STATUS {
         OFF,
         RUNNING,
@@ -144,32 +145,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void tick() {
-        ++counter;
-        Log.d("pttt", "tick Thread = " + Thread.currentThread().getName() + "   " + counter);
-        main_LBL_info.setText("" + counter);
-    }
+        Log.d("ptttTick", "Tick Thread A = " + Thread.currentThread().getName() + "   " + counter);
 
-    private final int DELAY = 1000;
-    private final Handler handler = new Handler();
-    private Runnable r = new Runnable() {
-        public void run() {
-            tick();
-            handler.postDelayed(r, DELAY);
-        }
-    };
-
-    private void startTimer() {
-        timerStatus = TIMER_STATUS.RUNNING;
-        main_FAB_action.setText("STOP");
-        main_FAB_action.setIconResource(R.drawable.ic_stop);
-        handler.postDelayed(r, DELAY);
-
-    }
-
-    private void stopTimer() {
-        main_FAB_action.setText("START");
-        main_FAB_action.setIconResource(R.drawable.ic_play);
-        handler.removeCallbacks(r);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ++counter;
+                main_LBL_info.setText("" + counter);
+            }
+        });
     }
 
     @Override
@@ -188,4 +172,39 @@ public class MainActivity extends AppCompatActivity {
             startTimer();
         }
     }
+
+    private void updateTimerControls() {
+        if (timerStatus == TIMER_STATUS.RUNNING) {
+            main_FAB_action.setText("STOP");
+            main_FAB_action.setIconResource(R.drawable.ic_stop);
+        } else {
+            main_FAB_action.setText("START");
+            main_FAB_action.setIconResource(R.drawable.ic_play);
+        }
+    }
+
+    // ----------- ----------- ----------- ----------- ----------- -----------
+
+
+
+    private final Handler handler = new Handler();
+    private Runnable r = new Runnable() {
+        public void run() {
+            tick();
+            handler.postDelayed(r, DELAY);
+        }
+    };
+
+    private void startTimer() {
+        timerStatus = TIMER_STATUS.RUNNING;
+        updateTimerControls();
+        handler.postDelayed(r, DELAY);
+    }
+
+    private void stopTimer() {
+        updateTimerControls();
+        handler.removeCallbacks(r);
+    }
+
+
 }

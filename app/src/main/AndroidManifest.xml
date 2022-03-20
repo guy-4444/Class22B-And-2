@@ -12,9 +12,33 @@
 
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity_Handler"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="Handler"
+            >
+
+        </activity>
+
+        <activity
+            android:name=".Activity_Timer"
+            android:exported="true"
+            android:label="Timer"
+            >
+
+        </activity>
+
+        <activity
+            android:name=".Activity_CountDown"
+            android:exported="true"
+            android:label="Count Down"
+            >
+
+        </activity>
+
+        <activity
+            android:name=".Activity_Worker"
+            android:exported="true"
+            android:label="Worker"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
